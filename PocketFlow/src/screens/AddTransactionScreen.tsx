@@ -4,12 +4,11 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  TextInput,
   ScrollView,
 } from 'react-native';
-import { Colors, Spacing, Radius, FontSize, Shadow } from '../utils/theme';
-import { CATEGORIES } from '../data/mockData';
-import { TransactionType } from '../types';
+import { Colors, Spacing, Radius, FontSize, Shadow } from '@/utils/theme';
+import { CATEGORIES } from '@/data/mockData';
+import { TransactionType } from '@/types';
 
 interface Props {
   onClose: () => void;
@@ -20,9 +19,9 @@ export default function AddTransactionScreen({ onClose, onSave }: Props) {
   const [type, setType] = useState<TransactionType>('expense');
   const [amount, setAmount] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(CATEGORIES[0].id);
-  const [note, setNote] = useState('');
-  const [account, setAccount] = useState('cash');
-  const [date, setDate] = useState('Hôm nay');
+  const [_note, _setNote] = useState('');
+  const [_account, _setAccount] = useState('cash');
+  const [date, _setDate] = useState('Hôm nay');
 
   const displayAmount = amount
     ? parseInt(amount).toLocaleString('vi-VN')

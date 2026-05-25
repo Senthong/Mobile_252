@@ -7,14 +7,14 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import { Colors, Spacing, Radius, FontSize, Shadow } from '../utils/theme';
+import { Colors, Spacing, Radius, FontSize, Shadow } from '@/utils/theme';
 import {
   MOCK_TRANSACTIONS,
   ACCOUNTS,
   formatCurrency,
   formatDate,
-} from '../data/mockData';
-import { Transaction } from '../types';
+} from '@/data/mockData';
+import { Transaction } from '@/types';
 
 interface Props {
   onAddTransaction: () => void;

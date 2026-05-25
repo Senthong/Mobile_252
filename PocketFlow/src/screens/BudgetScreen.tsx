@@ -6,11 +6,11 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import { Colors, Spacing, Radius, FontSize, Shadow } from '../utils/theme';
-import { MOCK_BUDGETS, CATEGORIES, formatCurrency } from '../data/mockData';
+import { Colors, Spacing, Radius, FontSize, Shadow } from '@/utils/theme';
+import { MOCK_BUDGETS, CATEGORIES, formatCurrency } from '@/data/mockData';
 
 export default function BudgetScreen() {
-  const [showFilter, setShowFilter] = useState(false);
+  const [_showFilter, _setShowFilter] = useState(false);
 
   const totalBudget = MOCK_BUDGETS.reduce((s, b) => s + b.limit, 0);
   const totalSpent = MOCK_BUDGETS.reduce((s, b) => s + b.spent, 0);
@@ -71,7 +71,7 @@ export default function BudgetScreen() {
             spent={budget.spent}
             limit={budget.limit}
             pct={pct}
-            isOver={isOver}
+            _isOver={isOver}
           />
         );
       })}
@@ -90,10 +90,10 @@ export default function BudgetScreen() {
 }
 
 function BudgetItem({
-  icon, name, color, spent, limit, pct, isOver
+  icon, name, color, spent, limit, pct, _isOver
 }: {
   icon: string; name: string; color: string;
-  spent: number; limit: number; pct: number; isOver: boolean;
+  spent: number; limit: number; pct: number; _isOver: boolean;
 }) {
   const barColor = pct > 90 ? Colors.error : pct > 70 ? Colors.warning : Colors.income;
 

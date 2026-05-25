@@ -7,9 +7,9 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import { Colors, Spacing, Radius, FontSize, Shadow } from '../utils/theme';
-import { MOCK_TRANSACTIONS, formatCurrency, formatDate } from '../data/mockData';
-import { Transaction } from '../types';
+import { Colors, Spacing, Radius, FontSize, Shadow } from '@/utils/theme';
+import { MOCK_TRANSACTIONS, formatCurrency, formatDate } from '@/data/mockData';
+import { Transaction } from '@/types';
 
 export default function TransactionsScreen() {
   const [search, setSearch] = useState('');

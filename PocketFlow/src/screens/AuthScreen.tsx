@@ -9,7 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import { Colors, Spacing, Radius, FontSize, Shadow } from '../utils/theme';
+import { Colors, Spacing, Radius, FontSize, Shadow } from '@/utils/theme';
 
 interface Props {
   onLogin: () => void;

@@ -7,8 +7,8 @@ import {
   TouchableOpacity,
   Switch,
 } from 'react-native';
-import { Colors, Spacing, Radius, FontSize, Shadow } from '../utils/theme';
-import { MOCK_USER } from '../data/mockData';
+import { Colors, Spacing, Radius, FontSize, Shadow } from '@/utils/theme';
+import { MOCK_USER } from '@/data/mockData';
 
 interface Props {
   onLogout: () => void;
@@ -17,7 +17,7 @@ interface Props {
 export default function ProfileScreen({ onLogout }: Props) {
   const [darkMode, setDarkMode] = useState(false);
   const [autoSync, setAutoSync] = useState(true);
-  const [notifications, setNotifications] = useState(true);
+  const [_notifications, _setNotifications] = useState(true);
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>

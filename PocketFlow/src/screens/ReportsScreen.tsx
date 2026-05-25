@@ -5,12 +5,11 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  Dimensions,
 } from 'react-native';
-import { Colors, Spacing, Radius, FontSize, Shadow } from '../utils/theme';
-import { MOCK_TRANSACTIONS, MOCK_BUDGETS, CATEGORIES, formatCurrency } from '../data/mockData';
+import { Colors, Spacing, Radius, FontSize, Shadow } from '@/utils/theme';
+import { MOCK_TRANSACTIONS, CATEGORIES, formatCurrency } from '@/data/mockData';
 
-const { width } = Dimensions.get('window');
+// const { width } = Dimensions.get('window');
 
 const periods = ['Tháng này', 'Tháng trước', 'Quý 3'];
 

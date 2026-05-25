@@ -9,7 +9,7 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
 } from 'react-native';
-import { Colors, Spacing, Radius, FontSize } from '../utils/theme';
+import { Colors, Spacing, Radius, FontSize } from '@/utils/theme';
 
 const { width } = Dimensions.get('window');
 

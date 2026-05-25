@@ -8,7 +8,7 @@ import {
   SafeAreaView,
   StatusBar,
 } from 'react-native';
-import { Colors, FontSize } from './src/utils/theme';
+import { Colors, FontSize } from '@/utils/theme';
 
 import OnboardingScreen from './src/screens/OnboardingScreen';
 import AuthScreen from './src/screens/AuthScreen';
