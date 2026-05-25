@@ -23,10 +23,53 @@ interface Props {
 export default function OverviewScreen({ onAddTransaction }: Props) {
   const [aiInput, setAiInput] = useState('');
   const totalBalance = ACCOUNTS.reduce((s, a) => s + a.balance, 0);
+
+  // ✅ Calculate current month expense only
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
   const monthExpense = MOCK_TRANSACTIONS
-    .filter(t => t.type === 'expense')
+    .filter(t => {
+      const txDate = new Date(t.date);
+      return (
+        t.type === 'expense' &&
+        txDate.getMonth() === currentMonth &&
+        txDate.getFullYear() === currentYear
+      );
+    })
     .reduce((s, t) => s + t.amount, 0);
+
   const aiSuggestions = ['Cà phê 35k', 'Ăn trưa 50k', 'Taxi 75k', 'Siêu thị 200k'];
+
+  // ✅ Parse AI input: "Cà phê 35k" => { amount: 35000, note: "Cà phê" }
+  const parseAIInput = (input: string): { amount: number; note: string } | null => {
+    const match = input.match(/^(.+?)\s*(\d+)k?$/i);
+    if (!match) return null;
+    return {
+      note: match[1].trim(),
+      amount: parseInt(match[2], 10) * 1000,
+    };
+  };
+
+  // ✅ Process AI input
+  const handleAIInput = () => {
+    if (!aiInput.trim()) return;
+    const parsed = parseAIInput(aiInput);
+    if (parsed) {
+      onAddTransaction();
+      setAiInput('');
+    }
+  };
+
+  // ✅ Handle suggestion click
+  const handleSuggestion = (suggestion: string) => {
+    setAiInput(suggestion);
+    // Process immediately
+    setTimeout(() => {
+      onAddTransaction();
+      setAiInput('');
+    }, 100);
+  };
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -69,14 +112,14 @@ export default function OverviewScreen({ onAddTransaction }: Props) {
             value={aiInput}
             onChangeText={setAiInput}
           />
-          <TouchableOpacity style={styles.aiSendBtn} onPress={onAddTransaction}>
+          <TouchableOpacity style={styles.aiSendBtn} onPress={handleAIInput}>
             <Text style={styles.aiSendIcon}>▶</Text>
           </TouchableOpacity>
         </View>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style={styles.suggestRow}>
             {aiSuggestions.map((s, i) => (
-              <TouchableOpacity key={i} style={styles.suggestChip} onPress={() => setAiInput(s)}>
+              <TouchableOpacity key={i} style={styles.suggestChip} onPress={() => handleSuggestion(s)}>
                 <Text style={styles.suggestChipText}>{s}</Text>
               </TouchableOpacity>
             ))}
@@ -92,7 +135,7 @@ export default function OverviewScreen({ onAddTransaction }: Props) {
             <Text style={styles.spendAmount}>{formatCurrency(monthExpense)}</Text>
           </View>
           <View style={styles.progressCircle}>
-            <Text style={styles.progressText}>85%</Text>
+            <Text style={styles.progressText}>{Math.round((monthExpense / (monthExpense + 1000000)) * 100)}%</Text>
           </View>
         </View>
 

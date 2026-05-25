@@ -98,25 +98,17 @@ export const MOCK_USER: User = {
   tier: 'HẠNG TINH HOA',
 };
 
-export const formatCurrency = (amount: number, currency = 'VND'): string => {
-  if (currency === 'VND') {
-    return new Intl.NumberFormat('vi-VN').format(amount) + 'đ';
-  }
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency,
-  }).format(amount);
-};
-
+// ✅ Format helper functions
 export const formatDate = (dateStr: string): string => {
   const date = new Date(dateStr);
-  const now = new Date();
-  const diffMs = now.getTime() - date.getTime();
-  const diffHours = diffMs / (1000 * 60 * 60);
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  return `${day}/${month}`;
+};
 
-  if (diffHours < 1) return 'Vừa xong';
-  if (diffHours < 24) return `Hôm nay, ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
-  if (diffHours < 48) return 'Hôm qua';
-
-  return date.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' });
+export const formatCurrency = (amount: number): string => {
+  return new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+  }).format(amount);
 };

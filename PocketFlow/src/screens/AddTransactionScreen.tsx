@@ -5,34 +5,65 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from 'react-native';
 import { Colors, Spacing, Radius, FontSize, Shadow } from '@/utils/theme';
-import { CATEGORIES } from '@/data/mockData';
-import { TransactionType } from '@/types';
+import { CATEGORIES, formatDate } from '@/data/mockData';
+import { TransactionType, Transaction } from '@/types';
 
 interface Props {
   onClose: () => void;
-  onSave: () => void;
+  onSave: (transaction: Transaction) => void;
 }
 
 export default function AddTransactionScreen({ onClose, onSave }: Props) {
   const [type, setType] = useState<TransactionType>('expense');
   const [amount, setAmount] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(CATEGORIES[0].id);
-  const [_note, _setNote] = useState('');
-  const [_account, _setAccount] = useState('cash');
-  const [date, _setDate] = useState('Hôm nay');
+  const date = formatDate(new Date().toISOString());
 
   const displayAmount = amount
-    ? parseInt(amount).toLocaleString('vi-VN')
+    ? parseInt(amount, 10).toLocaleString('vi-VN')
     : '0';
 
+  // ✅ Validate decimal points - only allow one
   const handleNum = (n: string) => {
     if (n === '⌫') {
       setAmount(a => a.slice(0, -1));
+    } else if (n === '.') {
+      // Only add decimal if not already present
+      if (!amount.includes('.')) {
+        setAmount(a => a + n);
+      }
     } else {
       setAmount(a => a + n);
     }
+  };
+
+  // ✅ Validate and save transaction
+  const handleSave = () => {
+    if (!amount || parseFloat(amount) <= 0) {
+      Alert.alert('Lỗi', 'Vui lòng nhập số tiền hợp lệ (> 0)');
+      return;
+    }
+
+    const category = CATEGORIES.find(c => c.id === selectedCategory);
+    if (!category) {
+      Alert.alert('Lỗi', 'Vui lòng chọn danh mục');
+      return;
+    }
+
+    const newTransaction: Transaction = {
+      id: Date.now().toString(),
+      amount: parseFloat(amount),
+      type,
+      category,
+      note: `Giao dịch ${type === 'expense' ? 'chi phí' : 'thu nhập'}`,
+      date: new Date().toISOString(),
+      account: 'cash',
+    };
+
+    onSave(newTransaction);
   };
 
   const numpad = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0', '⌫'];
@@ -115,7 +146,7 @@ export default function AddTransactionScreen({ onClose, onSave }: Props) {
       </View>
 
       {/* Save */}
-      <TouchableOpacity style={styles.saveBtn} onPress={onSave} activeOpacity={0.85}>
+      <TouchableOpacity style={styles.saveBtn} onPress={handleSave} activeOpacity={0.85}>
         <Text style={styles.saveBtnText}>Lưu Giao dịch 🔒</Text>
       </TouchableOpacity>
     </View>

@@ -6,6 +6,8 @@ import {
   FlatList,
   TouchableOpacity,
   TextInput,
+  Modal,
+  Alert,
 } from 'react-native';
 import { Colors, Spacing, Radius, FontSize, Shadow } from '@/utils/theme';
 import { MOCK_TRANSACTIONS, formatCurrency, formatDate } from '@/data/mockData';
@@ -14,6 +16,35 @@ import { Transaction } from '@/types';
 export default function TransactionsScreen() {
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState<'all' | 'income' | 'expense'>('all');
+  const [showFilterModal, setShowFilterModal] = useState(false);
+
+  // ✅ Handle filter button click
+  const handleFilterClick = () => {
+    Alert.alert('Tùy chọn lọc', 'Chọn loại lọc', [
+      {
+        text: 'Tất cả',
+        onPress: () => {
+          setFilter('all');
+          setShowFilterModal(false);
+        },
+      },
+      {
+        text: 'Chi phí',
+        onPress: () => {
+          setFilter('expense');
+          setShowFilterModal(false);
+        },
+      },
+      {
+        text: 'Thu nhập',
+        onPress: () => {
+          setFilter('income');
+          setShowFilterModal(false);
+        },
+      },
+      { text: 'Hủy', style: 'cancel' },
+    ]);
+  };
 
   const filtered = MOCK_TRANSACTIONS.filter((t) => {
     const matchSearch = t.note.toLowerCase().includes(search.toLowerCase());
@@ -43,7 +74,7 @@ export default function TransactionsScreen() {
             onChangeText={setSearch}
           />
         </View>
-        <TouchableOpacity style={styles.filterBtn}>
+        <TouchableOpacity style={styles.filterBtn} onPress={handleFilterClick}>
           <Text style={styles.filterBtnText}>Bộ lọc</Text>
         </TouchableOpacity>
       </View>

@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Switch,
+  Alert,
 } from 'react-native';
 import { Colors, Spacing, Radius, FontSize, Shadow } from '@/utils/theme';
 import { MOCK_USER } from '@/data/mockData';
@@ -17,10 +18,20 @@ interface Props {
 export default function ProfileScreen({ onLogout }: Props) {
   const [darkMode, setDarkMode] = useState(false);
   const [autoSync, setAutoSync] = useState(true);
-  const [_notifications, _setNotifications] = useState(true);
+
+  // ✅ Handle logout with confirmation
+  const handleLogout = () => {
+    Alert.alert('Đăng xuất', 'Bạn chắc chắn muốn đăng xuất?', [
+      { text: 'Hủy', style: 'cancel' },
+      { text: 'Đăng xuất', onPress: onLogout, style: 'destructive' },
+    ]);
+  };
+
+  // ✅ Apply dark mode styling
+  const containerStyle = darkMode ? styles.containerDark : styles.container;
 
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+    <ScrollView style={containerStyle} showsVerticalScrollIndicator={false}>
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Kiến trúc sư Tài chính</Text>
@@ -100,7 +111,7 @@ export default function ProfileScreen({ onLogout }: Props) {
       </View>
 
       {/* Logout */}
-      <TouchableOpacity style={styles.logoutBtn} onPress={onLogout}>
+      <TouchableOpacity style={styles.logoutBtn} onPress={handleLogout}>
         <Text style={styles.logoutBtnText}>↩ Đăng xuất</Text>
       </TouchableOpacity>
 
@@ -130,6 +141,7 @@ function SettingRow({ icon, title, subtitle, hasArrow }: {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Colors.background },
+  containerDark: { flex: 1, backgroundColor: Colors.dark.background },
 
   header: {
     flexDirection: 'row',

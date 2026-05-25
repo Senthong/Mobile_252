@@ -5,12 +5,21 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import { Colors, Spacing, Radius, FontSize, Shadow } from '@/utils/theme';
 import { MOCK_BUDGETS, CATEGORIES, formatCurrency } from '@/data/mockData';
 
 export default function BudgetScreen() {
-  const [_showFilter, _setShowFilter] = useState(false);
+  // ✅ Handle add category
+  const handleAddCategory = () => {
+    Alert.alert('Thêm danh mục', 'Chọn danh mục mới:', 
+      CATEGORIES.map(cat => ({
+        text: `${cat.icon} ${cat.name}`,
+        onPress: () => Alert.alert('Thành công', `Đã thêm danh mục ${cat.name}`),
+      }))
+    );
+  };
 
   const totalBudget = MOCK_BUDGETS.reduce((s, b) => s + b.limit, 0);
   const totalSpent = MOCK_BUDGETS.reduce((s, b) => s + b.spent, 0);
@@ -52,7 +61,7 @@ export default function BudgetScreen() {
           <Text style={styles.sectionSubtitle}>HỆ THỐNG QUẢN LÝ</Text>
           <Text style={styles.sectionTitle}>Danh mục chi tiêu</Text>
         </View>
-        <TouchableOpacity style={styles.addBtn}>
+        <TouchableOpacity style={styles.addBtn} onPress={handleAddCategory}>
           <Text style={styles.addBtnText}>➕ Thêm danh mục mới</Text>
         </TouchableOpacity>
       </View>
